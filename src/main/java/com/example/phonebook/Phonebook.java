@@ -1,3 +1,5 @@
+package com.example.phonebook;
+
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.Reader;
@@ -11,11 +13,11 @@ import com.google.gson.Gson;
 
 
 
-class Phonebook{
+public class Phonebook{
    private Map<String,Contact> map;//store contacts
    private Gson gson = new Gson();
 
-   Phonebook(){
+   public Phonebook(){
        Type mapType = new TypeToken<Map<String, Contact>>(){}.getType();
 
         try (Reader reader = new FileReader("contacts.json")) {
@@ -37,23 +39,24 @@ class Phonebook{
    }
 
    //CRUD operations for phonebook
-   public void saveContact(String name,String phone_num){
+   public int saveContact(String name,String phone_num){
         if(name.isEmpty() || phone_num.length() != 10){
             System.out.println("Invalid name or number");
-            return;
+            return 1;
         }
 
         Contact contact = new Contact(name,phone_num);
         map.put(name,contact);
 
         System.out.println("Contact saved");
+        return 1;
     }
 
-   public void updateContactName(String old_name,String new_name){
+   public int updateContactName(String old_name,String new_name){
         Contact contact;
-        if((contact = searchContact(old_name)) == null){
+        if((contact = check_Contact(old_name)) == null){
             System.out.println("Contact not found");
-            return;
+            return 1;
         }
 
         contact.setContact_name(new_name);
@@ -61,57 +64,83 @@ class Phonebook{
 
         map.put(new_name,contact);
         System.out.println("Name updated successfully");
+        return 1;
      
    }
 
-   public void updateContactNumber(String name,String new_number){
+   public int updateContactNumber(String name,String new_number){
         Contact contact;
-        if((contact = searchContact(name)) == null){
+        if((contact = check_Contact(name)) == null){
             System.out.println("Contact not found");
-            return;
+            return 1;
+        }
+
+        if(new_number.length() != 10){
+            System.out.println("Invalid number");
+            return 1;
         }
         
         contact.setContact_number(new_number);
+        map.remove(name);
         map.put(name,contact);
         System.out.println("Number updated successfully");
 
+        return 1;
    }
 
-   public void deleteContact(String name){
+   public int deleteContact(String name){
         if(map.get(name) == null){
             System.out.println("Contact not found");
-            return;
+            return 1;
         }
 
         map.remove(name);
         System.out.println("Contact deleted");
+        return 1;
    }
 
-   public Contact searchContact(String name){
+   private Contact check_Contact(String name){
         Contact contact;
         if((contact = map.get(name)) == null){
+            System.out.println("Contact not found");
             return null;
         }
-
+        
         return contact;
    }
 
-   public Collection<Contact> displayContacts(){
+   public int displayContacts(){
         if(is_Empty()){
             System.out.println("Contact is empty");
-            return null;
+            return 1;
         }
 
         Collection<Contact> contacts = map.values();
-        return contacts;
+        for(Contact contact : contacts){
+            System.out.println(contact.getContact_name() + " - " + contact.getPhone_number());
+        }
+        return 1;
    }
 
-   public void exit(){
+   public int displayContact(String name){
+        Contact contact;
+        if((contact = check_Contact(name)) == null){
+            System.out.println("Contact not found");
+            return 1;
+        }
+
+        System.out.println(contact.getContact_name() + " - " + contact.getPhone_number());
+        return 1;
+   }
+
+   public int exit(){
          try (Writer writer = new FileWriter("contacts.json")) {
             gson.toJson(map,writer);
         }catch(Exception e){
             e.printStackTrace();
+            return 0;
         }
         System.out.println("PhoneBook closed");
+        return 0;
    }
 }

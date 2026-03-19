@@ -1,4 +1,2 @@
-*.txt
-bin/
-*.class
-lib/
+/target/
+.vscode/
