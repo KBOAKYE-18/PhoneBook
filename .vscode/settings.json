@@ -1,0 +1,9 @@
+{
+    "java.project.sourcePaths": [
+        "src"
+    ],
+    "java.project.referencedLibraries": [
+        "/home/eboakye/Desktop/Phonebook/lib/gson-2.10.1.jar"
+    ],
+    "java.format.settings.url": ".vscode/java-formatter.xml"
+}
