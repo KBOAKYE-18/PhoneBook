@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import com.google.gson.Gson;   
 
-
+import com.example.app.Color;
 
 public class Phonebook{
    private Map<String,Contact> map;//store contacts
@@ -39,108 +39,110 @@ public class Phonebook{
    }
 
    //CRUD operations for phonebook
-   public int saveContact(String name,String phone_num){
+   public void saveContact(String name,String phone_num){
         if(name.isEmpty() || phone_num.length() != 10){
-            System.out.println("Invalid name or number");
-            return 1;
+            System.out.println(Color.RED + "Invalid name or number" + Color.RESET);
+            return;
         }
 
         Contact contact = new Contact(name,phone_num);
         map.put(name,contact);
-
-        System.out.println("Contact saved");
-        return 1;
+        
+        saveToFile();
+        
+        System.out.println(Color.GREEN + "Contact saved" + Color.RESET);
+        
     }
 
-   public int updateContactName(String old_name,String new_name){
+   public void updateContactName(String old_name,String new_name){
         Contact contact;
         if((contact = check_Contact(old_name)) == null){
-            System.out.println("Contact not found");
-            return 1;
+            return;
         }
 
         contact.setContact_name(new_name);
         map.remove(old_name);
 
         map.put(new_name,contact);
-        System.out.println("Name updated successfully");
-        return 1;
+        saveToFile();
+
+        System.out.println(Color.GREEN + "Name updated successfully" + Color.RESET);
+        
      
    }
 
-   public int updateContactNumber(String name,String new_number){
+   public void updateContactNumber(String name,String new_number){
         Contact contact;
         if((contact = check_Contact(name)) == null){
-            System.out.println("Contact not found");
-            return 1;
+            return;
         }
 
         if(new_number.length() != 10){
-            System.out.println("Invalid number");
-            return 1;
+            System.out.println(Color.RED + "Invalid number" + Color.RESET);
+            return;
         }
         
         contact.setContact_number(new_number);
         map.remove(name);
         map.put(name,contact);
-        System.out.println("Number updated successfully");
 
-        return 1;
+        saveToFile();
+        System.out.println(Color.GREEN + "Number updated successfully" + Color.RESET);
+
    }
 
-   public int deleteContact(String name){
+   public void deleteContact(String name){
         if(map.get(name) == null){
-            System.out.println("Contact not found");
-            return 1;
+            System.out.println(Color.RED + "Contact not found" + Color.RESET);
+            return;
         }
 
         map.remove(name);
-        System.out.println("Contact deleted");
-        return 1;
+        saveToFile();
+
+        System.out.println(Color.GREEN + "Contact deleted" + Color.RESET);
+        
    }
 
    private Contact check_Contact(String name){
         Contact contact;
         if((contact = map.get(name)) == null){
-            System.out.println("Contact not found");
+            System.out.println(Color.RED + "Contact not found" + Color.RESET);
             return null;
         }
         
         return contact;
    }
 
-   public int displayContacts(){
+   public void displayContacts(){
         if(is_Empty()){
-            System.out.println("Contact is empty");
-            return 1;
+            System.out.println(Color.RED + "Contact is empty" + Color.RESET);
+            return;
         }
 
         Collection<Contact> contacts = map.values();
         for(Contact contact : contacts){
-            System.out.println(contact.getContact_name() + " - " + contact.getPhone_number());
+            System.out.println(Color.BLUE + contact.getContact_name() + " - " + contact.getPhone_number() + Color.RESET);
         }
-        return 1;
+        
    }
 
-   public int displayContact(String name){
+   public void displayContact(String name){
         Contact contact;
         if((contact = check_Contact(name)) == null){
-            System.out.println("Contact not found");
-            return 1;
+            return;
         }
 
-        System.out.println(contact.getContact_name() + " - " + contact.getPhone_number());
-        return 1;
+        System.out.println(Color.BLUE + contact.getContact_name() + " - " + contact.getPhone_number() + Color.RESET);
    }
 
-   public int exit(){
+   public void saveToFile(){
          try (Writer writer = new FileWriter("contacts.json")) {
             gson.toJson(map,writer);
         }catch(Exception e){
             e.printStackTrace();
-            return 0;
         }
-        System.out.println("PhoneBook closed");
-        return 0;
+        System.out.println(Color.GREEN + "Changes made successfully" + Color.RESET);
    }
+
 }
