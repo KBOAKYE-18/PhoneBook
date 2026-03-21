@@ -1,9 +1,10 @@
 package com.example.phonebook;
+//Contact is package private and could be only access by phonebook class
 class Contact{
     private String contact_name;
     private String phone_number;
 
-
+    
     Contact(String name,String phone_num){
         contact_name = name;
         phone_number = phone_num;

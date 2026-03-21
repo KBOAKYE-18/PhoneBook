@@ -3,23 +3,25 @@ package com.example.phonebook;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.Reader;
-import com.google.gson.reflect.TypeToken;
+import com.google.gson.reflect.TypeToken; //For specify
 import java.lang.reflect.Type;
 import java.io.Writer;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.Collection;  //for storing contacts
+import java.util.HashMap;  
 import java.util.Map;
-import com.google.gson.Gson;   
+import com.google.gson.Gson;    //for converting java objects into json objects
 
-import com.example.app.Color;
+import com.example.app.Color;  //import color class
 
 public class Phonebook{
    private Map<String,Contact> map;//store contacts
-   private Gson gson = new Gson();
-
+   private Gson gson = new Gson(); //create json object for java conversion
+   
    public Phonebook(){
+       /*For specifying type during json to java object conversion */
        Type mapType = new TypeToken<Map<String, Contact>>(){}.getType();
 
+        //Used try resources for reading json data
         try (Reader reader = new FileReader("contacts.json")) {
             map = gson.fromJson(reader, mapType);
         } catch (Exception e) {
@@ -31,7 +33,7 @@ public class Phonebook{
             map = new HashMap<>();
         }
 
-        System.out.println("PhoneBook initilized");
+        System.out.println(Color.GREEN + "PhoneBook initilized....." + Color.RESET);
    }
 
    private boolean is_Empty(){

@@ -10,7 +10,7 @@ public class PhonebookApp {
     
 
     public static void main(String[] args) {
-        boolean state = true;
+        boolean state = true; //For terminating while loop
         Phonebook phonebook = new Phonebook();
         Scanner scanner = new Scanner(System.in);
         
