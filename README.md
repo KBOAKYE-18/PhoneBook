@@ -27,21 +27,19 @@ Run the following commands on the command line based on your OS to install maven
 Make sure you are connected to wifi
 
 ###  Windows (using winget)
-winget install Apache.Maven
+Run `winget install Apache.Maven`
 
 ### LINUX(UBUNTU OR DEBIAN)
-sudo apt update
-sudo apt install maven
+`sudo apt update` followed by `sudo apt install maven`
 
 ### macOS
-brew install maven
+`brew install maven`
 
-maven -v to check if maven is installed
+Run `maven -v` to check if maven is installed
 
 ## Runnning The Program
 To run the program you simply type
-mvn compile
-mvn exec:java
+`mvn compile` followed by `mvn exec:java`
 
 ## Folder Structure
 The java source code can be founded within the nested folder in src/main/java/com/example/app and then src/main/java/com/example/phonebook which helps separate into different packages.
